@@ -1,0 +1,2 @@
+# selmag
+Demo project

@@ -7,14 +7,20 @@
 <body>
 <a data-th-href="@{/catalogue/products/{productId}(productId = ${product.id})}">&larr; К товарeу</a>
 <h1>Редактирование товара &laquo;[[${product.title}]]&laquo;</h1>
+<div data-th-if="${errors}">
+    <h2>Допущены ошибки</h2>
+    <ul>
+        <li data-th-each="error: ${errors}" data-th-text="${error}"></li>
+    </ul>
+</div>
 <form method="post" data-th-action="@{/catalogue/products/{productId}/edit(productId = ${product.id})}">
     <label>
         Название: <br>
-        <input type="text" name="title" data-th-value="${product.title}"> <br>
+        <input type="text" name="title" data-th-value="${pauload != null ? payload.title : product.title}"> <br>
     </label> <br>
     <label>
         Описание: <br>
-        <textarea name="details" data-th-text="${product.details}"></textarea>
+        <textarea name="details" data-th-text="${pauload != null ? payload.details: product.details}"></textarea>
     </label>
     <button type="submit">Изменить</button>
 </form>

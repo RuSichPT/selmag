@@ -1,7 +1,7 @@
-package com.github.rusichpt.managerapp.service;
+package com.github.rusichpt.catalogue.service;
 
-import com.github.rusichpt.managerapp.entity.Product;
-import com.github.rusichpt.managerapp.repository.ProductRepository;
+import com.github.rusichpt.catalogue.repository.ProductRepository;
+import com.github.rusichpt.catalogue.entity.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -30,8 +30,8 @@ public class DefaultProductService implements ProductService {
     }
 
     @Override
-    public void updateProduct(Integer id, String title, String details) {
-        productRepository.findById(id)
+    public void updateProduct(int productId, String title, String details) {
+        productRepository.findById(productId)
                 .ifPresentOrElse(product -> {
                     product.setTitle(title);
                     product.setDetails(details);
@@ -41,8 +41,8 @@ public class DefaultProductService implements ProductService {
     }
 
     @Override
-    public void deleteProduct(Integer id) {
-        productRepository.deleteById(id);
+    public void deleteProduct(int productId) {
+        productRepository.deleteById(productId);
     }
 
 }

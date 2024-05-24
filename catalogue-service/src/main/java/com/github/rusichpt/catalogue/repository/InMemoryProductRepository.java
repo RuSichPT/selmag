@@ -1,6 +1,6 @@
-package com.github.rusichpt.managerapp.repository;
+package com.github.rusichpt.catalogue.repository;
 
-import com.github.rusichpt.managerapp.entity.Product;
+import com.github.rusichpt.catalogue.entity.Product;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;

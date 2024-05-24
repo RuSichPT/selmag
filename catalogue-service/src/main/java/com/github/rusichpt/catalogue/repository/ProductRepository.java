@@ -1,6 +1,6 @@
-package com.github.rusichpt.managerapp.repository;
+package com.github.rusichpt.catalogue.repository;
 
-import com.github.rusichpt.managerapp.entity.Product;
+import com.github.rusichpt.catalogue.entity.Product;
 
 import java.util.List;
 import java.util.Optional;

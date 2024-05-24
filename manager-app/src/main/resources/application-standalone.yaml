@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: manager-app
+
+selmag:
+  services:
+    catalogue:
+      uri: http://localhost:8081

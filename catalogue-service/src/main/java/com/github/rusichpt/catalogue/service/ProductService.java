@@ -1,6 +1,6 @@
-package com.github.rusichpt.managerapp.service;
+package com.github.rusichpt.catalogue.service;
 
-import com.github.rusichpt.managerapp.entity.Product;
+import com.github.rusichpt.catalogue.entity.Product;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,7 +12,7 @@ public interface ProductService {
 
     Optional<Product> findProduct(int productId);
 
-    void updateProduct(Integer id, String title, String details);
+    void updateProduct(int productId, String title, String details);
 
-    void deleteProduct(Integer id);
+    void deleteProduct(int productId);
 }

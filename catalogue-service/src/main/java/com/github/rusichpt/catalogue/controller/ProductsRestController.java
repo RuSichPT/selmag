@@ -14,6 +14,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.StreamSupport;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,8 +23,8 @@ public class ProductsRestController {
     private final ProductService productService;
 
     @GetMapping
-    public List<ProductResponse> findProducts() {
-        return productService.findAllProducts().stream()
+    public List<ProductResponse> findProducts(@RequestParam(name = "filter", required = false) String filter) {
+        return StreamSupport.stream(productService.findAllProducts(filter).spliterator(),false)
                 .map(product -> new ProductResponse(product.getId(), product.getTitle(), product.getDetails()))
                 .toList();
     }

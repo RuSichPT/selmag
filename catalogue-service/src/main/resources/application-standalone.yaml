@@ -9,6 +9,12 @@ spring:
     schemas:
       - public
       - catalogue
+  security:
+    user:
+      name: catalogue_service_user
+      password: password
+      roles:
+        - SERVICE
   jpa:
     show-sql: true
 server:

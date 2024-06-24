@@ -2,7 +2,7 @@ version: '3.1'
 
 services:
 
-  postgres: # https://hub.docker.com/_/postgres
+  postgres_catalogue: # https://hub.docker.com/_/postgres
     image: postgres
     restart: always
     environment:
@@ -11,3 +11,13 @@ services:
       POSTGRES_PASSWORD: catalogue
     ports:
       - 5432:5432
+
+  postgres_manager: # https://hub.docker.com/_/postgres
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: manager_db
+      POSTGRES_USER: manager
+      POSTGRES_PASSWORD: manager
+    ports:
+      - 5433:5432

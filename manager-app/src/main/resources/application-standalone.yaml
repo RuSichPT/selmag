@@ -9,10 +9,25 @@ spring:
     schemas:
       - public
       - user_management
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8082/realms/selmag
+            user-name-attribute: preferred_username
+        registration:
+          keycloak:
+            client-id: manager-app
+            client-secret: 3HwpiJHJ4adsxBRv1qnW1RLeml82y2V2
+            scope:
+              - openid
+              - edit_catalogue
+              - view_catalogue
+              - microprofile-jwt
 
 selmag:
   services:
     catalogue:
       uri: http://localhost:8081
-      username: catalogue_service_user
-      password: password
+      registration-id: keycloak

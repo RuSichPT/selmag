@@ -10,11 +10,10 @@ spring:
       - public
       - catalogue
   security:
-    user:
-      name: catalogue_service_user
-      password: password
-      roles:
-        - SERVICE
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8082/realms/selmag
   jpa:
     show-sql: true
 server:

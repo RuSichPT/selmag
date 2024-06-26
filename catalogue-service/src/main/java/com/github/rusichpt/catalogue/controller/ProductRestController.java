@@ -6,17 +6,21 @@ import com.github.rusichpt.catalogue.entity.Product;
 import com.github.rusichpt.catalogue.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.Locale;
 import java.util.NoSuchElementException;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("catalogue-api/products/{productId:\\d+}")
@@ -31,7 +35,9 @@ public class ProductRestController {
     }
 
     @GetMapping
-    public ProductResponse findProduct(@ModelAttribute("product") Product product) {
+    public ProductResponse findProduct(@ModelAttribute("product") Product product, Principal principal) {
+        log.info("User: {}", principal);// todo в качестве демонстрации
+        log.info("User Email: {}", ((JwtAuthenticationToken)principal).getToken().getClaimAsString("email"));// todo в качестве демонстрации
         return new ProductResponse(product.getId(), product.getTitle(), product.getDetails());
     }
 

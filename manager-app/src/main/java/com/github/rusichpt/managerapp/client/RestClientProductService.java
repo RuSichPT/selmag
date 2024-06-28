@@ -80,7 +80,7 @@ public class RestClientProductService implements ProductService {
         try {
             restClient
                     .delete()
-                    .uri("/catalogue-api/products/{productId}")
+                    .uri("/catalogue-api/products/{productId}", productId)
                     .retrieve()
                     .toBodilessEntity();
         } catch (HttpClientErrorException.NotFound exception) {

@@ -11,7 +11,7 @@ Demo project
 Use absolute path for keycloak config
 
 ### Users
-Username: manager
-Password: 123
-Username: customer
+Username: manager  
+Password: 123  
+Username: customer  
 Password: 123

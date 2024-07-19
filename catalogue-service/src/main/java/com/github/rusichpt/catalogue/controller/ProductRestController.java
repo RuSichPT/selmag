@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.util.Locale;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 @Slf4j
 @RestController
@@ -36,17 +37,19 @@ public class ProductRestController {
 
     @GetMapping
     public ProductResponse findProduct(@ModelAttribute("product") Product product, Principal principal) {
-        log.info("User: {}", principal);// todo в качестве демонстрации
-        log.info("User Email: {}", ((JwtAuthenticationToken)principal).getToken().getClaimAsString("email"));// todo в качестве демонстрации
+        if (Objects.nonNull(principal)) {
+            log.info("User: {}", principal);// todo в качестве демонстрации
+            log.info("User Email: {}", ((JwtAuthenticationToken) principal).getToken().getClaimAsString("email"));// todo в качестве демонстрации
+        }
         return new ProductResponse(product.getId(), product.getTitle(), product.getDetails());
     }
 
     @PatchMapping
     public ResponseEntity<Void> updateProduct(@PathVariable("productId") int productId,
-                                           @Valid @RequestBody UpdateProductPayload payload,
-                                           BindingResult bindingResult) throws BindException {
+                                              @Valid @RequestBody UpdateProductPayload payload,
+                                              BindingResult bindingResult) throws BindException {
         if (bindingResult.hasErrors()) {
-            if (bindingResult instanceof BindException exception){
+            if (bindingResult instanceof BindException exception) {
                 throw exception;
             } else {
                 throw new BindException(bindingResult);
@@ -68,7 +71,7 @@ public class ProductRestController {
     @ExceptionHandler(NoSuchElementException.class)
     public ResponseEntity<ProblemDetail> handleNoSuchElementException(NoSuchElementException exception, Locale locale) {
         return ResponseEntity.of(ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND,
-                messageSource.getMessage(exception.getMessage(), new Object[0], exception.getMessage(), locale)))
+                        messageSource.getMessage(exception.getMessage(), new Object[0], exception.getMessage(), locale)))
                 .build();
     }
 }

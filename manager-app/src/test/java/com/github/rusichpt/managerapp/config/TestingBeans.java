@@ -26,7 +26,7 @@ public class TestingBeans {
 
     @Bean
     @Primary
-    public RestClientProductService testProductService(@Value("${selmag.services.catalogue.uri:http://localhost:54321}") String catalogueBaseUri) {
+    public RestClientProductService testRestClientProductService(@Value("${selmag.services.catalogue.uri:http://localhost:54321}") String catalogueBaseUri) {
         return new RestClientProductService(RestClient.builder()
                 .baseUrl(catalogueBaseUri)
                 .build());

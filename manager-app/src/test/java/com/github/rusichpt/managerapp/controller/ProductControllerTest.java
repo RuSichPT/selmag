@@ -71,7 +71,7 @@ class ProductControllerTest {
         // given
 
         // when
-        String result = controller.getProduct();
+        String result = controller.getProductPage();
 
         // then
         assertEquals("catalogue/products/product", result);

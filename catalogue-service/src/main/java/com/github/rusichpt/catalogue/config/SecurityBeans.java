@@ -11,16 +11,18 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 public class SecurityBeans {
-    @Bean
+    private static final String SCOPE_EDIT_CATALOGUE = "SCOPE_edit_catalogue";
+
+//    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
-                        .requestMatchers(HttpMethod.POST,"/catalogue-api/products")
-                        .hasAuthority("SCOPE_edit_catalogue")
-                        .requestMatchers(HttpMethod.PATCH,"/catalogue-api/products/{productId:\\d}")
-                        .hasAuthority("SCOPE_edit_catalogue")
-                        .requestMatchers(HttpMethod.DELETE,"/catalogue-api/products/{productId:\\d}")
-                        .hasAuthority("SCOPE_edit_catalogue")
+                        .requestMatchers(HttpMethod.POST, "/catalogue-api/products")
+                        .hasAuthority(SCOPE_EDIT_CATALOGUE)
+                        .requestMatchers(HttpMethod.PATCH, "/catalogue-api/products/{productId:\\d}")
+                        .hasAuthority(SCOPE_EDIT_CATALOGUE)
+                        .requestMatchers(HttpMethod.DELETE, "/catalogue-api/products/{productId:\\d}")
+                        .hasAuthority(SCOPE_EDIT_CATALOGUE)
                         .requestMatchers(HttpMethod.GET)
                         .hasAuthority("SCOPE_view_catalogue")
                         .anyRequest()
@@ -30,6 +32,15 @@ public class SecurityBeans {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // отключаем сессию в цепочке фильтров
                 .oauth2ResourceServer(oauth2ResourceServer -> oauth2ResourceServer
                         .jwt(Customizer.withDefaults()))
+                .build();
+    }
+
+    @Bean
+    public SecurityFilterChain securityFilterChain1(HttpSecurity http) throws Exception {
+        return http
+                .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
+                        .anyRequest()
+                        .permitAll())
                 .build();
     }
 }

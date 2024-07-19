@@ -13,7 +13,7 @@ import org.springframework.web.client.RestClient;
 @Configuration
 public class ClientBeans {
     @Bean
-    public RestClientProductService productService(
+    public RestClientProductService restClientProductService(
             @Value("${selmag.services.catalogue.uri:http://localhost:8081}") String catalogueBaseUri,
             @Value("${selmag.services.catalogue.registration-id:keycloak}") String registrationId,
             ClientRegistrationRepository clientRegistrationRepository,

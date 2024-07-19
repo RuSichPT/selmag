@@ -29,7 +29,7 @@ public class ProductController {
     }
 
     @GetMapping
-    public String getProduct() {
+    public String getProductPage() {
         return "catalogue/products/product";
     }
 

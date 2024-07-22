@@ -1,7 +1,7 @@
-package com.github.rusichpt.customerapp.service;
+package com.github.rusichpt.feedback.service;
 
-import com.github.rusichpt.customerapp.entity.ProductReview;
-import com.github.rusichpt.customerapp.repository.ProductReviewRepository;
+import com.github.rusichpt.feedback.entity.ProductReview;
+import com.github.rusichpt.feedback.repository.ProductReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;

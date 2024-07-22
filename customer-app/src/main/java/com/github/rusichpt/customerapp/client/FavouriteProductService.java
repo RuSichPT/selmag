@@ -1,4 +1,4 @@
-package com.github.rusichpt.customerapp.service;
+package com.github.rusichpt.customerapp.client;
 
 import com.github.rusichpt.customerapp.entity.FavouriteProduct;
 import reactor.core.publisher.Flux;
@@ -6,11 +6,11 @@ import reactor.core.publisher.Mono;
 
 public interface FavouriteProductService {
 
-    Mono<FavouriteProduct> addProductToFavourites(int productId);
-
-    Mono<Void> removeProductFromFavourites(int productId);
+    Flux<FavouriteProduct> findFavouriteProducts();
 
     Mono<FavouriteProduct> findFavouriteProductByProductId(int productId);
 
-    Flux<FavouriteProduct> findFavouriteProducts();
+    Mono<FavouriteProduct> addProductToFavourites(int productId);
+
+    Mono<Void> removeProductFromFavourites(int productId);
 }

@@ -1,8 +1,8 @@
 package com.github.rusichpt.customerapp.controller;
 
+import com.github.rusichpt.customerapp.client.FavouriteProductService;
 import com.github.rusichpt.customerapp.client.ProductService;
 import com.github.rusichpt.customerapp.entity.FavouriteProduct;
-import com.github.rusichpt.customerapp.service.FavouriteProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,7 +31,7 @@ public class ProductsController {
     public Mono<String> getFavouriteProductsPage(Model model, @RequestParam(name = "filter", required = false) String filter) {
         model.addAttribute("filter", filter);
         return favouriteProductService.findFavouriteProducts()
-                .map(FavouriteProduct::getProductId)
+                .map(FavouriteProduct::productId)
                 .collectList()
                 .flatMap(listProductId -> productService.findAllProducts(filter)
                         .filter(product -> listProductId.contains(product.id()))

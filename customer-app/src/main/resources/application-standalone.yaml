@@ -5,5 +5,7 @@ selmag:
   services:
     catalogue:
       uri: http://localhost:8081
+    feedback:
+      uri: http://localhost:8083
 server:
   port: 8082

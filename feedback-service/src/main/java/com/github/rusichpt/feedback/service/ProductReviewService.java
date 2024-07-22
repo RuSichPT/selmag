@@ -1,6 +1,6 @@
-package com.github.rusichpt.customerapp.service;
+package com.github.rusichpt.feedback.service;
 
-import com.github.rusichpt.customerapp.entity.ProductReview;
+import com.github.rusichpt.feedback.entity.ProductReview;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

@@ -1,5 +1,6 @@
 package com.github.rusichpt.managerapp.client;
 
+import com.github.rusichpt.managerapp.client.exception.BadRequestException;
 import com.github.rusichpt.managerapp.controller.payload.NewProductPayload;
 import com.github.rusichpt.managerapp.controller.payload.UpdateProductPayload;
 import com.github.rusichpt.managerapp.entity.Product;

@@ -1,6 +1,6 @@
-package com.github.rusichpt.customerapp.repository;
+package com.github.rusichpt.feedback.repository;
 
-import com.github.rusichpt.customerapp.entity.FavouriteProduct;
+import com.github.rusichpt.feedback.entity.FavouriteProduct;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;

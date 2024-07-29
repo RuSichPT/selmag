@@ -6,6 +6,9 @@ import com.github.rusichpt.feedback.entity.ProductReview;
 import com.github.rusichpt.feedback.service.ProductReviewService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -18,14 +21,21 @@ import reactor.core.publisher.Mono;
 public class ProductReviewRestController {
 
     private final ProductReviewService productReviewService;
+    private final ReactiveMongoTemplate reactiveMongoTemplate; // для примера
 
     @GetMapping("by-product-id/{productId:\\d+}")
     public Flux<ProductReviewResponse> findProductReviewsByProductId(@PathVariable("productId") int productId) {
-        return productReviewService.findProductReviewByProductId(productId)
+        return reactiveMongoTemplate
+                .find(Query.query(Criteria.where("productId").is(productId)), ProductReview.class)
                 .map(productReview -> new ProductReviewResponse(
                         productReview.getProductId(),
                         productReview.getRating(),
                         productReview.getReview())); // todo mapper
+//        return productReviewService.findProductReviewByProductId(productId)
+//                .map(productReview -> new ProductReviewResponse(
+//                        productReview.getProductId(),
+//                        productReview.getRating(),
+//                        productReview.getReview())); // todo mapper
     }
 
     @PostMapping

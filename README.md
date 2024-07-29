@@ -1,7 +1,7 @@
 # selmag
 Demo project
 
-## Postgres
+## PostgreSQL, MongoDB
      docker compose up -d
 
 ## [Keycloak](https://www.keycloak.org/getting-started/getting-started-docker)

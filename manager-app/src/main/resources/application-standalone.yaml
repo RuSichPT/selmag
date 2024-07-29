@@ -1,14 +1,6 @@
 spring:
   application:
     name: manager-app
-  datasource:
-    url: jdbc:postgresql://localhost:5433/manager_db
-    username: manager
-    password: manager
-  flyway:
-    schemas:
-      - public
-      - user_management
   security:
     oauth2:
       client:

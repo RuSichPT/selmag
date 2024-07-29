@@ -3,8 +3,9 @@ version: '3.1'
 services:
 
   postgres_catalogue: # https://hub.docker.com/_/postgres
-    image: postgres
+    image: postgres:16
     restart: always
+    container_name: catalogue-db
     environment:
       POSTGRES_DB: catalogue_db
       POSTGRES_USER: catalogue
@@ -12,12 +13,13 @@ services:
     ports:
       - 5432:5432
 
-  postgres_manager: # https://hub.docker.com/_/postgres
-    image: postgres
+  mongo: # https://hub.docker.com/_/mongo
+    image: mongo:7
     restart: always
-    environment:
-      POSTGRES_DB: manager_db
-      POSTGRES_USER: manager
-      POSTGRES_PASSWORD: manager
+    container_name: feedback-db
+#    environment:
+#      MONGO_INITDB_DATABASE: feedback_db
+#      MONGO_INITDB_ROOT_USERNAME: root
+#      MONGO_INITDB_ROOT_PASSWORD: example
     ports:
-      - 5433:5432
+      - 27017:27017

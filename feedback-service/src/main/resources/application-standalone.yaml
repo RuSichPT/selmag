@@ -4,5 +4,10 @@ spring:
   data:
     mongodb:
       uri: mongodb://localhost:27017/feedback_db
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8082/realms/selmag
 server:
-  port: 8083
+  port: 8084

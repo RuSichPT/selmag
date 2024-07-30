@@ -7,6 +7,7 @@ import com.github.rusichpt.feedback.service.FavouriteProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Flux;
@@ -20,24 +21,30 @@ public class FavouriteProductRestController {
     private final FavouriteProductService favouriteProductService;
 
     @GetMapping
-    public Flux<FavouriteProductResponse> findFavouriteProducts() {
-        return favouriteProductService.findFavouriteProducts()
+    public Flux<FavouriteProductResponse> findFavouriteProducts(Mono<JwtAuthenticationToken> authenticationTokenMono) {
+        return authenticationTokenMono
+                .flatMapMany(token -> favouriteProductService.findFavouriteProducts(token.getToken().getSubject()))
                 .map(favouriteProduct -> new FavouriteProductResponse(favouriteProduct.getProductId())); //todo mapper
     }
 
     @GetMapping("by-product-id/{productId:\\d+}")
-    public Mono<FavouriteProductResponse> findFavouriteProductByProductId(@PathVariable("productId") int productId) {
-        return favouriteProductService.findFavouriteProductByProductId(productId)
+    public Mono<FavouriteProductResponse> findFavouriteProductByProductId(
+            Mono<JwtAuthenticationToken> authenticationTokenMono,
+            @PathVariable("productId") int productId) {
+        return authenticationTokenMono
+                .flatMap(token -> favouriteProductService.findFavouriteProductByProductId(productId, token.getToken().getSubject()))
                 .map(favouriteProduct -> new FavouriteProductResponse(favouriteProduct.getProductId())); //todo mapper
     }
 
     @PostMapping
     public Mono<ResponseEntity<FavouriteProduct>> addProductToFavourites(
+            Mono<JwtAuthenticationToken> authenticationTokenMono,
             @Valid @RequestBody Mono<NewFavouriteProductPayload> payloadMono,
             UriComponentsBuilder uriComponentsBuilder
     ) {
-        return payloadMono
-                .flatMap(payload -> favouriteProductService.addProductToFavourites(payload.productId()))
+        return Mono.zip(authenticationTokenMono, payloadMono)
+                .flatMap(tuple -> favouriteProductService
+                        .addProductToFavourites(tuple.getT2().productId(), tuple.getT1().getToken().getSubject()))
                 .map(favouriteProduct -> ResponseEntity
                         .created(uriComponentsBuilder.replacePath("feedback-api/favourite-products/{id}")
                                 .build(favouriteProduct.getId()))
@@ -45,8 +52,11 @@ public class FavouriteProductRestController {
     }
 
     @DeleteMapping("by-product-id/{productId:\\d+}")
-    public Mono<ResponseEntity<Void>> removeProductFromFavourites(@PathVariable("productId") int productId) {
-        return favouriteProductService.removeProductFromFavourites(productId)
+    public Mono<ResponseEntity<Void>> removeProductFromFavourites(
+            Mono<JwtAuthenticationToken> authenticationTokenMono,
+            @PathVariable("productId") int productId) {
+        return authenticationTokenMono
+                .flatMap(token -> favouriteProductService.removeProductFromFavourites(productId, token.getToken().getSubject()))
                 .then(Mono.just(ResponseEntity.noContent().build()));
     }
 }

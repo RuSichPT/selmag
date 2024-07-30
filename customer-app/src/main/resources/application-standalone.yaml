@@ -1,11 +1,28 @@
 spring:
   application:
     name: customer-app
+  security:
+    oauth2:
+      client:
+        provider: # Предоставляют ключи доступа
+          keycloak:
+            issuer-uri: http://localhost:8082/realms/selmag
+            user-name-attribute: preferred_username
+        registration: # Регистрация клиента
+          keycloak:
+            client-id: customer-app
+            client-secret: n7WXKmPrGMbgTkcMso3Mv5nDPFtlfsRs
+            scope:
+              - openid
+              - view_catalogue
+              - microprofile-jwt
+
 selmag:
   services:
     catalogue:
       uri: http://localhost:8081
     feedback:
-      uri: http://localhost:8083
+      uri: http://localhost:8084
+
 server:
-  port: 8082
+  port: 8083

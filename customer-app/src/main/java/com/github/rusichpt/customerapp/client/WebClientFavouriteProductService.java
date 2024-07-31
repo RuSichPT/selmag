@@ -1,9 +1,11 @@
 package com.github.rusichpt.customerapp.client;
 
 import com.github.rusichpt.customerapp.client.exception.ClientBadRequestException;
-import com.github.rusichpt.customerapp.controller.payload.NewFavouriteProductPayload;
+import com.github.rusichpt.customerapp.client.payload.NewFavouriteProductPayloadClient;
 import com.github.rusichpt.customerapp.entity.FavouriteProduct;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.http.ProblemDetail;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
@@ -13,6 +15,7 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 
 @RequiredArgsConstructor
+@Slf4j
 public class WebClientFavouriteProductService implements FavouriteProductService {
 
     private final WebClient webClient;
@@ -38,16 +41,18 @@ public class WebClientFavouriteProductService implements FavouriteProductService
 
     @Override
     public Mono<FavouriteProduct> addProductToFavourites(int productId) {
+        log.info("Adding product to favourites: {}", productId);
         return webClient
                 .post()
                 .uri("/feedback-api/favourite-products")
-                .bodyValue(new NewFavouriteProductPayload(productId))
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(new NewFavouriteProductPayloadClient(productId))
                 .retrieve()
                 .bodyToMono(FavouriteProduct.class)
                 .onErrorMap(WebClientResponseException.BadRequest.class,
-                        exception -> new ClientBadRequestException(exception,
-                                ((List<String>) exception.getResponseBodyAs(ProblemDetail.class)
-                                        .getProperties().get("errors"))));
+                        exception -> new ClientBadRequestException("Возникла ошибка при добавление товара в избранные",
+                                exception, ((List<String>) exception.getResponseBodyAs(ProblemDetail.class)
+                                .getProperties().get("errors"))));
     }
 
     @Override

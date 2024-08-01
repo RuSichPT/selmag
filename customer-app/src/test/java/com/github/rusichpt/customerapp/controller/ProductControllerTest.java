@@ -94,12 +94,12 @@ class ProductControllerTest {
         // given
         var model = new ConcurrentModel();
         var productReviews = List.of(
-                new ProductReview(UUID.fromString("6a8512d8-cbaa-11ee-b986-376cc5867cf5"), 1, 5, "На пятёрочку"),
-                new ProductReview(UUID.fromString("849c3fac-cbaa-11ee-af68-737c6d37214a"), 1, 4, "Могло быть и лучше"));
+                new ProductReview(UUID.fromString("6a8512d8-cbaa-11ee-b986-376cc5867cf5"), 1, 5, "На пятёрочку","user-tester"),
+                new ProductReview(UUID.fromString("849c3fac-cbaa-11ee-af68-737c6d37214a"), 1, 4, "Могло быть и лучше", "user-tester"));
 
         doReturn(Flux.fromIterable(productReviews)).when(productReviewService).findProductReviewByProductId(1);
 
-        var favouriteProduct = new FavouriteProduct(UUID.fromString("af5f9496-cbaa-11ee-a407-27b46917819e"), 1);
+        var favouriteProduct = new FavouriteProduct(UUID.fromString("af5f9496-cbaa-11ee-a407-27b46917819e"), 1, "user-tester");
         doReturn(Mono.just(favouriteProduct)).when(favouriteProductService).findFavouriteProductByProductId(1);
 
         // when
@@ -121,7 +121,7 @@ class ProductControllerTest {
     @Test
     void addProductToFavourites_RequestIsValid_RedirectsToProductPage() {
         // given
-        doReturn(Mono.just(new FavouriteProduct(UUID.fromString("25ec67b4-cbac-11ee-adc8-4bd80e8171c4"), 1)))
+        doReturn(Mono.just(new FavouriteProduct(UUID.fromString("25ec67b4-cbac-11ee-adc8-4bd80e8171c4"), 1, "user-tester")))
                 .when(favouriteProductService).addProductToFavourites(1);
 
         // when
@@ -178,7 +178,7 @@ class ProductControllerTest {
         var model = new ConcurrentModel();
         var response = new MockServerHttpResponse();
 
-        doReturn(Mono.just(new ProductReview(UUID.fromString("86efa22c-cbae-11ee-ab01-679baf165fb7"), 1, 3, "Ну, на троечку...")))
+        doReturn(Mono.just(new ProductReview(UUID.fromString("86efa22c-cbae-11ee-ab01-679baf165fb7"), 1, 3, "Ну, на троечку...", "user-tester")))
                 .when(productReviewService).createProductReview(1, 3, "Ну, на троечку...");
 
         // when
@@ -202,7 +202,7 @@ class ProductControllerTest {
         var model = new ConcurrentModel();
         var response = new MockServerHttpResponse();
 
-        var favouriteProduct = new FavouriteProduct(UUID.fromString("af5f9496-cbaa-11ee-a407-27b46917819e"), 1);
+        var favouriteProduct = new FavouriteProduct(UUID.fromString("af5f9496-cbaa-11ee-a407-27b46917819e"), 1, "user-tester");
         doReturn(Mono.just(favouriteProduct)).when(favouriteProductService).findFavouriteProductByProductId(1);
 
         doReturn(Mono.error(new ClientBadRequestException("Возникла какая-то ошибка", null, List.of("Ошибка 1", "Ошибка 2"))))

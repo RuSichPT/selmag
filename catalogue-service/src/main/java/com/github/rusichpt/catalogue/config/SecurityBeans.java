@@ -19,9 +19,9 @@ public class SecurityBeans {
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
                         .requestMatchers(HttpMethod.POST, "/catalogue-api/products")
                         .hasAuthority(SCOPE_EDIT_CATALOGUE)
-                        .requestMatchers(HttpMethod.PATCH, "/catalogue-api/products/{productId:\\d}")
+                        .requestMatchers(HttpMethod.PATCH, "/catalogue-api/products/{productId:\\d+}")
                         .hasAuthority(SCOPE_EDIT_CATALOGUE)
-                        .requestMatchers(HttpMethod.DELETE, "/catalogue-api/products/{productId:\\d}")
+                        .requestMatchers(HttpMethod.DELETE, "/catalogue-api/products/{productId:\\d+}")
                         .hasAuthority(SCOPE_EDIT_CATALOGUE)
                         .requestMatchers(HttpMethod.GET)
                         .hasAuthority("SCOPE_view_catalogue")
@@ -32,15 +32,6 @@ public class SecurityBeans {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // отключаем сессию в цепочке фильтров
                 .oauth2ResourceServer(oauth2ResourceServer -> oauth2ResourceServer
                         .jwt(Customizer.withDefaults()))
-                .build();
-    }
-
-    @Bean
-    public SecurityFilterChain securityFilterChain1(HttpSecurity http) throws Exception {
-        return http
-                .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
-                        .anyRequest()
-                        .permitAll())
                 .build();
     }
 }

@@ -72,11 +72,11 @@ class ProductsRestControllerIT {
                 .andDo(print())
                 .andExpectAll(
                         status().isCreated(),
-                        header().string(HttpHeaders.LOCATION, "http://localhost/catalogue-api/products/1"),
+                        header().string(HttpHeaders.LOCATION, "http://localhost/catalogue-api/products/3"),
                         content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON),
                         content().json("""
                                     {
-                                        "id": 1,
+                                        "id": 3,
                                         "title": "Новый Товар №1",
                                         "details": "Описание товара №1"
                                     }

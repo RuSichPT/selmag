@@ -37,7 +37,8 @@ public class ProductReviewRestController {
                             .map(productReview -> new ProductReviewResponse(
                                     productReview.getProductId(),
                                     productReview.getRating(),
-                                    productReview.getReview())); // todo mapper
+                                    productReview.getReview(),
+                                    productReview.getUserId())); // todo mapper
                 });
 //        return productReviewService.findProductReviewByProductId(productId)
 //                .map(productReview -> new ProductReviewResponse(
@@ -53,7 +54,7 @@ public class ProductReviewRestController {
             UriComponentsBuilder uriComponentsBuilder) {
         return authenticationTokenMono
                 .flatMap(token -> payloadMono
-                        .flatMap(payload -> this.productReviewService.createProductReview(payload.productId(),
+                        .flatMap(payload -> productReviewService.createProductReview(payload.productId(),
                                 payload.rating(), payload.review(), token.getToken().getSubject())))
                 .map(productReview -> ResponseEntity
                         .created(uriComponentsBuilder.replacePath("/feedback-api/product-reviews/{id}")

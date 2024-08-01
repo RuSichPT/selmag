@@ -24,7 +24,9 @@ public class FavouriteProductRestController {
     public Flux<FavouriteProductResponse> findFavouriteProducts(Mono<JwtAuthenticationToken> authenticationTokenMono) {
         return authenticationTokenMono
                 .flatMapMany(token -> favouriteProductService.findFavouriteProducts(token.getToken().getSubject()))
-                .map(favouriteProduct -> new FavouriteProductResponse(favouriteProduct.getProductId())); //todo mapper
+                .map(favouriteProduct -> new FavouriteProductResponse(
+                        favouriteProduct.getProductId(),
+                        favouriteProduct.getUserId())); //todo mapper
     }
 
     @GetMapping("by-product-id/{productId:\\d+}")
@@ -33,7 +35,9 @@ public class FavouriteProductRestController {
             @PathVariable("productId") int productId) {
         return authenticationTokenMono
                 .flatMap(token -> favouriteProductService.findFavouriteProductByProductId(productId, token.getToken().getSubject()))
-                .map(favouriteProduct -> new FavouriteProductResponse(favouriteProduct.getProductId())); //todo mapper
+                .map(favouriteProduct -> new FavouriteProductResponse(
+                        favouriteProduct.getProductId(),
+                        favouriteProduct.getUserId())); //todo mapper
     }
 
     @PostMapping

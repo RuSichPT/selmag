@@ -51,7 +51,7 @@ class ProductRestControllerIT {
     @Test
     void findProduct_ProductDoesNotExist_ReturnsNotFound() throws Exception {
         // given
-        var requestBuilder = MockMvcRequestBuilders.get("/catalogue-api/products/1")
+        var requestBuilder = MockMvcRequestBuilders.get("/catalogue-api/products/100")
                 .with(jwt().jwt(builder -> builder.claim("scope", "view_catalogue")));
 
         // when
@@ -132,7 +132,7 @@ class ProductRestControllerIT {
     @Test
     void updateProduct_ProductDoesNotExist_ReturnsNotFound() throws Exception {
         // given
-        var requestBuilder = MockMvcRequestBuilders.patch("/catalogue-api/products/1")
+        var requestBuilder = MockMvcRequestBuilders.patch("/catalogue-api/products/100")
                 .locale(Locale.of("ru"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""
@@ -192,7 +192,7 @@ class ProductRestControllerIT {
     @Test
     void deleteProduct_ProductDoesNotExist_ReturnsNotFound() throws Exception {
         // given
-        var requestBuilder = MockMvcRequestBuilders.delete("/catalogue-api/products/1")
+        var requestBuilder = MockMvcRequestBuilders.delete("/catalogue-api/products/100")
                 .with(jwt().jwt(builder -> builder.claim("scope", "edit_catalogue")));
 
         // when

@@ -99,8 +99,8 @@ public class ProductController {
     @ExceptionHandler(NoSuchElementException.class)
     public String handleNoSuchElementException(NoSuchElementException exception, Model model,
                                                ServerHttpResponse response) {
-        response.setStatusCode(HttpStatus.NOT_FOUND);
         model.addAttribute("error", exception.getMessage());
+        response.setStatusCode(HttpStatus.NOT_FOUND);
         return "errors/404";
     }
 }

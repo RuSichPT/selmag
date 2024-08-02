@@ -10,6 +10,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.ui.ConcurrentModel;
 
@@ -66,6 +67,7 @@ class ProductsControllerTest {
         // given
         var payload = new NewProductPayload("Новый товар", "Описание нового товара");
         var model = new ConcurrentModel();
+        var response = new MockHttpServletResponse();
 
         doReturn(new Product(1, "Новый товар", "Описание нового товара"))
                 .when(productService)
@@ -74,7 +76,7 @@ class ProductsControllerTest {
 //                .createProduct(notNull(), any()); можно так
 
         // when
-        String result = productsController.createProduct(payload, model);
+        String result = productsController.createProduct(payload, model, response);
 
         // then
         assertEquals("redirect:/catalogue/products/1", result);
@@ -88,13 +90,14 @@ class ProductsControllerTest {
         // given
         var payload = new NewProductPayload("   ", null);
         var model = new ConcurrentModel();
+        var response = new MockHttpServletResponse();
 
         doThrow(new BadRequestException(List.of("Ошибка 1", "Ошибка 2")))
                 .when(productService)
                 .createProduct("   ", null);
 
         // when
-        String result = productsController.createProduct(payload, model);
+        String result = productsController.createProduct(payload, model, response);
 
         // then
         assertEquals("catalogue/products/new_product", result);

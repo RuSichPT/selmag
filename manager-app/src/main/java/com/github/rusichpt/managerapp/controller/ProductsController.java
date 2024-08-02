@@ -4,8 +4,10 @@ import com.github.rusichpt.managerapp.client.exception.BadRequestException;
 import com.github.rusichpt.managerapp.client.ProductService;
 import com.github.rusichpt.managerapp.controller.payload.NewProductPayload;
 import com.github.rusichpt.managerapp.entity.Product;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +27,7 @@ public class ProductsController {
     @GetMapping("list")
     public String getProductsList(Model model, @RequestParam(name = "filter", required = false) String filter,
                                   Principal principal) {
-        log.info("User: {}", principal);// todo в качестве демонстрации
+        log.info("User: {}", principal);// в качестве демонстрации
         model.addAttribute("products", productService.findAllProducts(filter));
         model.addAttribute("filter", filter);
         return "catalogue/products/list";
@@ -37,11 +39,14 @@ public class ProductsController {
     }
 
     @PostMapping("create")
-    public String createProduct(NewProductPayload payload, Model model) {
+    public String createProduct(NewProductPayload payload,
+                                Model model,
+                                HttpServletResponse response) {
         try {
             Product product = productService.createProduct(payload.title(), payload.details());
             return "redirect:/catalogue/products/%d".formatted(product.id());
         } catch (BadRequestException exception) {
+            response.setStatus(HttpStatus.BAD_REQUEST.value());
             model.addAttribute("payload", payload);
             model.addAttribute("errors", exception.getErrors());
             return "catalogue/products/new_product";

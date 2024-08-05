@@ -12,7 +12,10 @@ public class SecurityBeans {
     @Bean
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
         return http
-                .authorizeExchange(customizer -> customizer.anyExchange().authenticated())
+                .authorizeExchange(configurer -> configurer
+                        .pathMatchers("/webjars/**", "/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**")
+                        .permitAll()
+                        .anyExchange().authenticated())
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .securityContextRepository(NoOpServerSecurityContextRepository.getInstance()) // отключаем хранение информации о пользователе между запросами(сессию)
                 .oauth2ResourceServer(customizer -> customizer.jwt(Customizer.withDefaults()))

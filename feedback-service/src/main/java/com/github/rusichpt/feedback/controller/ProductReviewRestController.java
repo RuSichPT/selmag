@@ -4,6 +4,9 @@ import com.github.rusichpt.feedback.controller.payload.NewProductReviewPayload;
 import com.github.rusichpt.feedback.controller.payload.ProductReviewResponse;
 import com.github.rusichpt.feedback.entity.ProductReview;
 import com.github.rusichpt.feedback.service.ProductReviewService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,8 +30,12 @@ public class ProductReviewRestController {
     private final ReactiveMongoTemplate reactiveMongoTemplate; // для примера
 
     @GetMapping("by-product-id/{productId:\\d+}")
-    public Flux<ProductReviewResponse> findProductReviewsByProductId(@PathVariable("productId") int productId,
-                                                                     Mono<JwtAuthenticationToken> principalMono) {
+    @Operation(
+            security = @SecurityRequirement(name = "keycloak")
+    )
+    public Flux<ProductReviewResponse> findProductReviewsByProductId(
+            @PathVariable("productId") int productId,
+            @Parameter(hidden = true) Mono<JwtAuthenticationToken> principalMono) {
         return principalMono
                 .flatMapMany(principal -> {
                     log.info("Principal claims:{}", principal.getToken().getClaims()); // для демонстрации

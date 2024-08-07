@@ -1,10 +1,7 @@
-package com.github.rusichpt.managerapp.config;
+package com.github.rusichpt.catalogue.config;
 
-import com.github.rusichpt.managerapp.client.RestClientProductService;
-import com.github.rusichpt.managerapp.security.OAuthClientHttpRequestInterceptor;
 import de.codecentric.boot.admin.client.registration.BlockingRegistrationClient;
 import de.codecentric.boot.admin.client.registration.RegistrationClient;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
@@ -15,27 +12,12 @@ import org.springframework.security.oauth2.client.OAuth2AuthorizeRequest;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
-import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizedClientManager;
-import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
-import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestTemplate;
 
 @Configuration
 public class ClientBeans {
-    @Bean
-    public RestClientProductService restClientProductService(
-            @Value("${selmag.services.catalogue.uri:http://localhost:8081}") String catalogueBaseUri,
-            @Value("${selmag.services.catalogue.registration-id:keycloak}") String registrationId,
-            ClientRegistrationRepository clientRegistrationRepository,
-            OAuth2AuthorizedClientRepository authorizedClientRepository) {
-        return new RestClientProductService(RestClient.builder()
-                .baseUrl(catalogueBaseUri)
-                .requestInterceptor(
-                        new OAuthClientHttpRequestInterceptor(
-                                new DefaultOAuth2AuthorizedClientManager(clientRegistrationRepository, authorizedClientRepository),
-                                registrationId))
-                .build());
-    }
+
+    // Создаем клиента для регистрации в spring boot admin, добавляя данные для oauth в заголовки
     @Bean
     @ConditionalOnProperty(name = "spring.boot.admin.client.enabled", havingValue = "true")
     public RegistrationClient registrationClient(
@@ -50,8 +32,8 @@ public class ClientBeans {
                 .interceptors((request, body, execution) -> {
                     if (!request.getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
                         OAuth2AuthorizedClient authorizedClient = authorizedClientManager.authorize(OAuth2AuthorizeRequest
-                                .withClientRegistrationId("metrics")
-                                .principal("manager-app-metrics-client")
+                                .withClientRegistrationId("keycloak")
+                                .principal("catalogue-service-metrics-client")
                                 .build());
 
                         request.getHeaders().setBearerAuth(authorizedClient.getAccessToken().getTokenValue());

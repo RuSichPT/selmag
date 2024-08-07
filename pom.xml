@@ -13,6 +13,7 @@
         <module>catalogue-service</module>
         <module>customer-app</module>
         <module>feedback-service</module>
+        <module>admin-server</module>
     </modules>
 
     <properties>
@@ -20,6 +21,7 @@
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring-boot.version>3.2.5</spring-boot.version>
+        <spring-boot-admin.version>3.2.2</spring-boot-admin.version>
     </properties>
 
     <dependencyManagement>
@@ -30,6 +32,13 @@
                 <version>${spring-boot.version}</version>
                 <scope>import</scope>
                 <type>pom</type>
+            </dependency>
+            <dependency>
+                <groupId>de.codecentric</groupId>
+                <artifactId>spring-boot-admin-dependencies</artifactId>
+                <version>${spring-boot-admin.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>

@@ -1,6 +1,15 @@
 spring:
   application:
     name: manager-app
+  boot:
+    admin:
+      client:
+        url: http://localhost:8085
+        instance:
+          name: ${spring.application.name}
+          service-host-type: ip
+          service-url: http://localhost:8080
+        enabled: true # default
   security:
     oauth2:
       client:
@@ -17,6 +26,16 @@ spring:
               - edit_catalogue
               - view_catalogue
               - microprofile-jwt
+          metrics:
+            provider: keycloak
+            client-id: manager-app-metrics-client
+            client-secret: CzGP1zPoCf08CrpNfZKWwzNY2kQVdB3W
+            authorization-grant-type: client_credentials
+            scope:
+              - metrics_server
+      resourceserver:
+            jwt:
+              issuer-uri: http://localhost:8082/realms/selmag
 
 selmag:
   services:
@@ -26,3 +45,14 @@ selmag:
 
 server:
   port: 8080
+
+management:
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: '*'

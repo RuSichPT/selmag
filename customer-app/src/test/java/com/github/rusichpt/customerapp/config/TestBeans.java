@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.oauth2.client.registration.ReactiveClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.server.ServerOAuth2AuthorizedClientRepository;
+import org.springframework.security.oauth2.jwt.ReactiveJwtDecoder;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import static org.mockito.Mockito.mock;
@@ -47,5 +48,10 @@ public class TestBeans {
         return new WebClientProductReviewService(WebClient.builder()
                 .baseUrl("http://localhost:54321")
                 .build());
+    }
+
+    @Bean
+    public ReactiveJwtDecoder reactiveJwtDecoder() {
+        return mock();
     }
 }

@@ -24,8 +24,8 @@ public class SecurityBeans {
                         .hasAuthority(SCOPE_EDIT_CATALOGUE)
                         .requestMatchers(HttpMethod.DELETE, "/catalogue-api/products/{productId:\\d+}")
                         .hasAuthority(SCOPE_EDIT_CATALOGUE)
-                        .requestMatchers(HttpMethod.GET)
-                        .hasAuthority("SCOPE_view_catalogue")
+                        .requestMatchers("/actuator/**").hasAuthority("SCOPE_metrics")
+                        .requestMatchers(HttpMethod.GET).hasAuthority("SCOPE_view_catalogue")
                         .anyRequest()
                         .denyAll())
                 .csrf(CsrfConfigurer::disable)
@@ -33,6 +33,7 @@ public class SecurityBeans {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // отключаем сессию в цепочке фильтров
                 .oauth2ResourceServer(oauth2ResourceServer -> oauth2ResourceServer
                         .jwt(Customizer.withDefaults()))
+                .oauth2Client(Customizer.withDefaults())
                 .build();
     }
 }

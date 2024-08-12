@@ -22,7 +22,10 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8082/realms/selmag
+#          issuer-uri: http://localhost:8082/realms/selmag
+          jwk-set-uri: http://localhost:8082/realms/selmag/protocol/openid-connect/certs
+          # Отключаем iss проверку, потому что host должен быть одинаковый, это не возможно с docker
+          # docker http://host.docker.internal:8082
       client:
         registration:
           keycloak:
@@ -41,6 +44,7 @@ server:
 #logging:
 #  level:
 #    sql: info
+
 springdoc:
   swagger-ui:
     oauth:

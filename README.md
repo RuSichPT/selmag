@@ -1,25 +1,78 @@
 # Selmag
 Demo project
 
-## PostgreSQL, MongoDB
+## Инфраструктура
+
+### PostgreSQL 
+В проекте используется в качестве БД модуля каталога.
+
+Запуск в Docker:
 
 ```shell
-     docker compose up -d
+docker run --name catalogue-db -p 5432:5432 -e POSTGRES_USER=catalogue -e POSTGRES_PASSWORD=catalogue -e POSTGRES_DB=catalogue_db postgres:16
 ```
+или через docker compose (см ниже)
 
-## [Keycloak](https://www.keycloak.org/getting-started/getting-started-docker)
+### MongoDB
+В проекте используется в качестве БД модуля обратной связи.
+
+Запуск в Docker:
 
 ```shell
-    docker run --name selmag-keycloak -p 8082:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin -v ./config/keycloak/import:/opt/keycloak/data/import quay.io/keycloak/keycloak:25.0.1 start-dev --import-realm 
+docker run --name feedback-db -p 27017:27017 mongo:7
 ```
+или через docker compose (см ниже)
 
-Use absolute path for keycloak config
+### [Keycloak](https://www.keycloak.org/getting-started/getting-started-docker)
+В проекте используется как OAuth 2.0/OIDC-сервер для авторизации сервисов и аутентификации пользователей.
 
-### Users
+Запуск в Docker:  
+
+```shell
+    docker run --name selmag-keycloak -p 8082:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin -v ${pwd}/config/keycloak/import:/opt/keycloak/data/import quay.io/keycloak/keycloak:25.0.1 start-dev --import-realm 
+```
+или через docker compose (см ниже)
+
+#### Users
 Username: manager  
 Password: 123  
 Username: customer  
 Password: 123
+
+### Victoria Metrics
+В проекте используется для сбора метрик сервисов.
+
+Запуск в Docker:  
+(используйте абсолютный путь для конфигурации keycloak)
+
+```shell
+docker run --name selmag-metrics -p 8428:8428 -v ${pwd}/config/victoria-metrics/promscrape.yaml:/promscrape.yaml victoriametrics/victoria-metrics:v1.93.12 --promscrape.config=/promscrape.yaml
+```
+или через docker compose (см ниже)
+
+### Grafana
+В проекте используется для визуализации метрик, логов и трассировок.
+
+Запуск в Docker:
+
+```shell
+docker run --name selmag-grafana -p 3000:3000 -v ${pwd}/data/grafana:/var/lib/grafana grafana/grafana:10.2.4
+```
+или через docker compose (см ниже)
+
+### Docker compose
+
+```shell
+docker compose up -d
+```
+
+## SpringDoc Open API
+
+### Catalogue-service
+http://localhost:8081/swagger-ui/index.html
+
+### Feedback-service
+http://localhost:8084/webjars/swagger-ui/index.html
 
 ## Spring-RestDocs
 Файлы (снипеты) генерируются в папке:
@@ -34,11 +87,3 @@ Password: 123
 Документация генерируется в папке:
 
     target/generated-docs
-
-## SpringDoc Open API
-
-### Catalogue-service
-http://localhost:8081/swagger-ui/index.html
-
-### Feedback-service
-http://localhost:8084/webjars/swagger-ui/index.html

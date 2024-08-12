@@ -4,7 +4,7 @@ services:
 
   postgres_catalogue: # https://hub.docker.com/_/postgres
     image: postgres:16
-    restart: always
+    restart: unless-stopped
     container_name: catalogue-db
     environment:
       POSTGRES_DB: catalogue_db
@@ -15,7 +15,7 @@ services:
 
   mongo: # https://hub.docker.com/_/mongo
     image: mongo:7
-    restart: always
+    restart: unless-stopped
     container_name: feedback-db
 #    environment:
 #      MONGO_INITDB_DATABASE: feedback_db
@@ -23,3 +23,38 @@ services:
 #      MONGO_INITDB_ROOT_PASSWORD: example
     ports:
       - 27017:27017
+
+  keycloak:
+    image:  quay.io/keycloak/keycloak:25.0.1
+    restart: unless-stopped
+    command: ["start-dev", "--import-realm"]
+    container_name: keycloak
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    ports:
+      - 8082:8080
+    volumes:
+      - ./config/keycloak/import/selmag.json:/opt/keycloak/data/import/selmag.json
+
+  victoria-metrics:
+      image: victoriametrics/victoria-metrics:v1.93.12
+      restart: unless-stopped
+      command: ["--promscrape.config=/promscrape.yaml"]
+      container_name: victoria-metrics
+      ports:
+        - 8428:8428
+      volumes:
+        - ./config/victoria-metrics/promscrape.yaml:/promscrape.yaml
+
+  grafana:
+    image: grafana/grafana:10.2.4
+    restart: unless-stopped
+    container_name: grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    ports:
+      - 3000:3000
+    volumes:
+      - ./data/grafana:/var/lib/grafana

@@ -58,13 +58,31 @@ docker run --name selmag-metrics -p 8428:8428 -v ${pwd}/config/victoria-metrics/
 ```shell
 docker run --name selmag-grafana -p 3000:3000 -v ${pwd}/data/grafana:/var/lib/grafana grafana/grafana:10.2.4
 ```
-или через docker compose (см ниже)
+или через docker compose (см ниже)  
+
+#### Адрес настройки
+
+- Victoria Metrics http://host.docker.internal:8428
+- Grafana Loki http://host.docker.internal:3100
 
 ### Docker compose
 
 ```shell
 docker compose up -d
 ```
+
+### Grafana Loki
+В проекте используется в качестве централизованного хранилища логов.
+
+Запуск в Docker:
+
+```shell
+docker run --name selmag-loki -p 3100:3100 grafana/loki:2.9.4
+```
+или через docker compose (см ниже)
+
+Для работы с Loki необходимо создать переменную среды 
+LOKI=http://localhost:3100
 
 ## SpringDoc Open API
 

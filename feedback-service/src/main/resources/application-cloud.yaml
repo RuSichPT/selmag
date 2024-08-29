@@ -1,0 +1,71 @@
+server:
+  port: 8084
+
+spring:
+  application:
+    name: feedback-service
+  boot:
+    admin:
+      client:
+        enabled: false
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/feedback_db
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+#          issuer-uri: http://localhost:8082/realms/selmag
+          jwk-set-uri: http://localhost:8082/realms/selmag/protocol/openid-connect/certs
+          # Отключаем iss проверку, потому что host должен быть одинаковый, это не возможно с docker
+          # docker http://host.docker.internal:8082
+      client:
+        registration:
+          keycloak:
+            client-id: feedback-service
+            client-secret: 0IUAzgjm3bVpE9ocpExhqP3bbVi6ZeAe
+            authorization-grant-type: client_credentials
+            scope:
+              - metrics_server
+          discovery:
+            provider: keycloak
+            client-id: feedback-service
+            client-secret: 0IUAzgjm3bVpE9ocpExhqP3bbVi6ZeAe
+            authorization-grant-type: client_credentials
+            scope:
+              - discovery
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8082/realms/selmag
+
+springdoc:
+  swagger-ui:
+    oauth:
+      client-id: feedback-service-swagger-ui
+      use-pkce-with-authorization-code-grant: true
+keycloak:
+  uri: http://localhost:8082
+
+management:
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  zipkin:
+    tracing:
+      endpoint: http://localhost:9411/api/v2/spans
+  tracing:
+    sampling:
+      probability: 1.0
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true

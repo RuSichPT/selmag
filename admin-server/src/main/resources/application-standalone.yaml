@@ -39,3 +39,7 @@ management:
         include:
           - health
           - prometheus
+
+eureka:
+  client:
+    enabled: false

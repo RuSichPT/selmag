@@ -320,7 +320,6 @@
       ],
       "manager-app": [],
       "security-admin-console": [],
-      "catalogue-service-metrics-client": [],
       "catalogue-service-swagger-ui": [],
       "customer-app": [],
       "account-console": [],
@@ -335,10 +334,12 @@
           "attributes": {}
         }
       ],
+      "feedback-service": [],
       "customer-app-metrics-client": [],
+      "eureka-server": [],
       "victoria-metrics": [],
       "manager-app-metrics-client": [],
-      "feedback-service-metrics-client": [],
+      "catalogue-service": [],
       "admin-cli": [],
       "account": [
         {
@@ -585,12 +586,12 @@
     },
     {
       "id": "d6329817-e739-44a4-a826-aaf28f1183e8",
-      "username": "service-account-catalogue-service-metrics-client",
+      "username": "service-account-catalogue-service",
       "emailVerified": false,
       "createdTimestamp": 1723018911656,
       "enabled": true,
       "totp": false,
-      "serviceAccountClientId": "catalogue-service-metrics-client",
+      "serviceAccountClientId": "catalogue-service",
       "credentials": [],
       "disableableCredentialTypes": [],
       "requiredActions": [],
@@ -635,13 +636,30 @@
       "groups": []
     },
     {
+      "id": "022ac122-ea74-439d-b9dd-b8fc9616e088",
+      "username": "service-account-eureka-server",
+      "emailVerified": false,
+      "createdTimestamp": 1724859806904,
+      "enabled": true,
+      "totp": false,
+      "serviceAccountClientId": "eureka-server",
+      "credentials": [],
+      "disableableCredentialTypes": [],
+      "requiredActions": [],
+      "realmRoles": [
+        "default-roles-selmag"
+      ],
+      "notBefore": 0,
+      "groups": []
+    },
+    {
       "id": "99914ae1-734c-4bce-a21a-d6cec7ffd0ad",
-      "username": "service-account-feedback-service-metrics-client",
+      "username": "service-account-feedback-service",
       "emailVerified": false,
       "createdTimestamp": 1723022600128,
       "enabled": true,
       "totp": false,
-      "serviceAccountClientId": "feedback-service-metrics-client",
+      "serviceAccountClientId": "feedback-service",
       "credentials": [],
       "disableableCredentialTypes": [],
       "requiredActions": [],
@@ -968,6 +986,7 @@
         "edit_catalogue",
         "address",
         "phone",
+        "discovery",
         "offline_access",
         "view_catalogue",
         "metrics",
@@ -1017,7 +1036,7 @@
     },
     {
       "id": "efe84258-b0bb-4bed-a6d6-be3c9f2df63b",
-      "clientId": "catalogue-service-metrics-client",
+      "clientId": "catalogue-service",
       "name": "",
       "description": "",
       "rootUrl": "",
@@ -1050,6 +1069,7 @@
         "backchannel.logout.session.required": "true",
         "post.logout.redirect.uris": "+",
         "oauth2.device.authorization.grant.enabled": "false",
+        "display.on.consent.screen": "false",
         "backchannel.logout.revoke.offline.tokens": "false"
       },
       "authenticationFlowBindingOverrides": {},
@@ -1117,6 +1137,7 @@
         "edit_catalogue",
         "address",
         "phone",
+        "discovery",
         "offline_access",
         "view_catalogue",
         "metrics_server",
@@ -1280,6 +1301,7 @@
         "edit_catalogue",
         "address",
         "phone",
+        "discovery",
         "offline_access",
         "view_catalogue",
         "microprofile-jwt"
@@ -1395,8 +1417,116 @@
       ]
     },
     {
+      "id": "2eaac044-46d7-47cb-bc09-99cd37e0a340",
+      "clientId": "eureka-server",
+      "name": "",
+      "description": "",
+      "rootUrl": "http://localhost:8761",
+      "adminUrl": "",
+      "baseUrl": "",
+      "surrogateAuthRequired": false,
+      "enabled": true,
+      "alwaysDisplayInConsole": false,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "U2tKuVfPB0DyxmN5D27D9zyNG4Ly3d0A",
+      "redirectUris": [
+        "/*"
+      ],
+      "webOrigins": [
+        "/*"
+      ],
+      "notBefore": 0,
+      "bearerOnly": false,
+      "consentRequired": false,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": true,
+      "publicClient": false,
+      "frontchannelLogout": true,
+      "protocol": "openid-connect",
+      "attributes": {
+        "oidc.ciba.grant.enabled": "false",
+        "client.secret.creation.time": "1724859806",
+        "backchannel.logout.session.required": "true",
+        "post.logout.redirect.uris": "+",
+        "oauth2.device.authorization.grant.enabled": "false",
+        "display.on.consent.screen": "false",
+        "backchannel.logout.revoke.offline.tokens": "false"
+      },
+      "authenticationFlowBindingOverrides": {},
+      "fullScopeAllowed": true,
+      "nodeReRegistrationTimeout": -1,
+      "protocolMappers": [
+        {
+          "id": "af9c1299-111c-41eb-8a51-84fcb3e492a5",
+          "name": "Client IP Address",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usersessionmodel-note-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.session.note": "clientAddress",
+            "id.token.claim": "true",
+            "introspection.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "clientAddress",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "id": "05d93d4f-e702-46a6-a6fc-e4f7ea0307af",
+          "name": "Client Host",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usersessionmodel-note-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.session.note": "clientHost",
+            "id.token.claim": "true",
+            "introspection.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "clientHost",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "id": "f4cfed3a-cfde-46e9-856c-d385ac61bd38",
+          "name": "Client ID",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usersessionmodel-note-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.session.note": "client_id",
+            "id.token.claim": "true",
+            "introspection.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "client_id",
+            "jsonType.label": "String"
+          }
+        }
+      ],
+      "defaultClientScopes": [
+        "web-origins",
+        "acr",
+        "profile",
+        "roles",
+        "basic",
+        "email"
+      ],
+      "optionalClientScopes": [
+        "edit_catalogue",
+        "address",
+        "phone",
+        "discovery",
+        "offline_access",
+        "metrics_server",
+        "view_catalogue",
+        "metrics",
+        "microprofile-jwt"
+      ]
+    },
+    {
       "id": "f1b9514c-5a18-42bb-9f75-f9fd0a2e6a9c",
-      "clientId": "feedback-service-metrics-client",
+      "clientId": "feedback-service",
       "name": "",
       "description": "",
       "rootUrl": "",
@@ -1429,6 +1559,7 @@
         "backchannel.logout.session.required": "true",
         "post.logout.redirect.uris": "+",
         "oauth2.device.authorization.grant.enabled": "false",
+        "display.on.consent.screen": "false",
         "backchannel.logout.revoke.offline.tokens": "false"
       },
       "authenticationFlowBindingOverrides": {},
@@ -1496,6 +1627,7 @@
         "edit_catalogue",
         "address",
         "phone",
+        "discovery",
         "offline_access",
         "metrics_server",
         "view_catalogue",
@@ -1661,6 +1793,7 @@
         "edit_catalogue",
         "address",
         "phone",
+        "discovery",
         "offline_access",
         "view_catalogue",
         "microprofile-jwt"
@@ -1915,6 +2048,7 @@
         "oidc.ciba.grant.enabled": "false",
         "client.secret.creation.time": "1723203147",
         "backchannel.logout.session.required": "true",
+        "post.logout.redirect.uris": "+",
         "oauth2.device.authorization.grant.enabled": "false",
         "backchannel.logout.revoke.offline.tokens": "false"
       },
@@ -1930,8 +2064,9 @@
           "consentRequired": false,
           "config": {
             "user.session.note": "client_id",
-            "id.token.claim": "true",
             "introspection.token.claim": "true",
+            "userinfo.token.claim": "true",
+            "id.token.claim": "true",
             "access.token.claim": "true",
             "claim.name": "client_id",
             "jsonType.label": "String"
@@ -1945,8 +2080,9 @@
           "consentRequired": false,
           "config": {
             "user.session.note": "clientAddress",
-            "id.token.claim": "true",
             "introspection.token.claim": "true",
+            "userinfo.token.claim": "true",
+            "id.token.claim": "true",
             "access.token.claim": "true",
             "claim.name": "clientAddress",
             "jsonType.label": "String"
@@ -1960,8 +2096,9 @@
           "consentRequired": false,
           "config": {
             "user.session.note": "clientHost",
-            "id.token.claim": "true",
             "introspection.token.claim": "true",
+            "userinfo.token.claim": "true",
+            "id.token.claim": "true",
             "access.token.claim": "true",
             "claim.name": "clientHost",
             "jsonType.label": "String"
@@ -2452,6 +2589,18 @@
       ]
     },
     {
+      "id": "f82924f7-dde0-4635-bc5a-b5bc1ff997b5",
+      "name": "discovery",
+      "description": "",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "true",
+        "display.on.consent.screen": "false",
+        "gui.order": "",
+        "consent.screen.text": ""
+      }
+    },
+    {
       "id": "0c55827e-7570-42d9-be62-6b88d8178185",
       "name": "offline_access",
       "description": "OpenID Connect built-in scope: offline_access",
@@ -2632,7 +2781,8 @@
     "view_catalogue",
     "edit_catalogue",
     "metrics",
-    "metrics_server"
+    "metrics_server",
+    "discovery"
   ],
   "browserSecurityHeaders": {
     "contentSecurityPolicyReportOnly": "",
@@ -2711,14 +2861,14 @@
         "subComponents": {},
         "config": {
           "allowed-protocol-mapper-types": [
-            "oidc-full-name-mapper",
-            "saml-user-property-mapper",
-            "saml-role-list-mapper",
-            "oidc-usermodel-attribute-mapper",
             "oidc-usermodel-property-mapper",
             "oidc-address-mapper",
+            "oidc-sha256-pairwise-sub-mapper",
+            "saml-role-list-mapper",
             "saml-user-attribute-mapper",
-            "oidc-sha256-pairwise-sub-mapper"
+            "oidc-usermodel-attribute-mapper",
+            "saml-user-property-mapper",
+            "oidc-full-name-mapper"
           ]
         }
       },
@@ -2730,14 +2880,14 @@
         "subComponents": {},
         "config": {
           "allowed-protocol-mapper-types": [
-            "saml-user-property-mapper",
-            "oidc-sha256-pairwise-sub-mapper",
-            "oidc-address-mapper",
             "oidc-usermodel-attribute-mapper",
             "saml-role-list-mapper",
-            "oidc-full-name-mapper",
+            "saml-user-property-mapper",
             "oidc-usermodel-property-mapper",
-            "saml-user-attribute-mapper"
+            "oidc-sha256-pairwise-sub-mapper",
+            "oidc-full-name-mapper",
+            "saml-user-attribute-mapper",
+            "oidc-address-mapper"
           ]
         }
       },

@@ -1,3 +1,6 @@
+server:
+  port: 8081
+
 spring:
   application:
     name: catalogue-service
@@ -8,7 +11,7 @@ spring:
         instance:
           name: ${spring.application.name}
           service-host-type: ip
-          service-url: http://localhost:8081
+          service-url: http://localhost:${server.port}
         enabled: true # default
   datasource:
     url: jdbc:postgresql://localhost:5432/catalogue_db
@@ -29,7 +32,7 @@ spring:
       client:
         registration:
           keycloak:
-            client-id: catalogue-service-metrics-client
+            client-id: catalogue-service
             client-secret: DNTfpL1J6znp7NlaXAe2p3RRLIocl0XQ
             authorization-grant-type: client_credentials
             scope:
@@ -39,8 +42,7 @@ spring:
             issuer-uri: http://localhost:8082/realms/selmag
   jpa:
     show-sql: true
-server:
-  port: 8081
+
 #logging:
 #  level:
 #    sql: info
@@ -69,3 +71,7 @@ management:
   tracing:
     sampling:
       probability: 1.0
+
+eureka:
+  client:
+    enabled: false

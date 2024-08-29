@@ -66,12 +66,6 @@ docker run --name selmag-grafana -p 3000:3000 -v ${pwd}/data/grafana:/var/lib/gr
 - Grafana Loki http://host.docker.internal:3100
 - Tempo http://host.docker.internal:3200
 
-### Docker compose
-
-```shell
-docker compose up -d
-```
-
 ### Grafana Loki
 В проекте используется в качестве централизованного хранилища логов.
 
@@ -83,7 +77,8 @@ docker run --name selmag-loki -p 3100:3100 grafana/loki:2.9.4
 или через docker compose (см ниже)
 
 Для работы с Loki необходимо создать переменную среды 
-LOKI=http://localhost:3100
+LOKI=http://localhost:3100   
+(admin-server, catalogue-service, customer-app, feedback-service, manager-app)
 
 ### Grafana Tempo
 
@@ -93,6 +88,12 @@ LOKI=http://localhost:3100
 
 ```shell
 docker run --name selmag-tracing -p 3200:3200 -p 9095:9095 -p 4317:4317 -p 4318:4318 -p 9411:9411 -p 14268:14268 -v ${pwd}/config/tempo/tempo.yaml:/etc/tempo.yaml grafana/tempo:2.3.1 --config.file=/etc/tempo.yaml
+```
+
+### Docker compose
+
+```shell
+docker compose up -d
 ```
 
 ## SpringDoc Open API

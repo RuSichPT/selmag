@@ -1,3 +1,6 @@
+server:
+  port: 8080
+
 spring:
   application:
     name: manager-app
@@ -8,7 +11,7 @@ spring:
         instance:
           name: ${spring.application.name}
           service-host-type: ip
-          service-url: http://localhost:8080
+          service-url: http://localhost:${server.port}
         enabled: true # default
   security:
     oauth2:
@@ -46,9 +49,6 @@ selmag:
       uri: http://localhost:8081
       registration-id: keycloak
 
-server:
-  port: 8080
-
 management:
   health:
     livenessstate:
@@ -65,3 +65,7 @@ management:
   tracing:
     sampling:
       probability: 1.0
+
+eureka:
+  client:
+    enabled: false

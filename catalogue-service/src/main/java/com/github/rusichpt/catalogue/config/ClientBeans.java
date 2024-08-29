@@ -33,7 +33,7 @@ public class ClientBeans {
                     if (!request.getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
                         OAuth2AuthorizedClient authorizedClient = authorizedClientManager.authorize(OAuth2AuthorizeRequest
                                 .withClientRegistrationId("keycloak")
-                                .principal("catalogue-service-metrics-client")
+                                .principal("catalogue-service")
                                 .build());
 
                         request.getHeaders().setBearerAuth(authorizedClient.getAccessToken().getTokenValue());

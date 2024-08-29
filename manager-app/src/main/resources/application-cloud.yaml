@@ -1,0 +1,76 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: manager-app
+  boot:
+    admin:
+      client:
+        enabled: false
+  security:
+    oauth2:
+      client:
+        provider: # Предоставляют ключи доступа
+          keycloak:
+            issuer-uri: http://localhost:8082/realms/selmag
+            user-name-attribute: preferred_username
+        registration: # Регистрация клиента
+          keycloak:
+            client-id: manager-app
+            client-secret: 3HwpiJHJ4adsxBRv1qnW1RLeml82y2V2
+            scope:
+              - openid
+              - edit_catalogue
+              - view_catalogue
+              - microprofile-jwt
+          metrics:
+            provider: keycloak
+            client-id: manager-app-metrics-client
+            client-secret: CzGP1zPoCf08CrpNfZKWwzNY2kQVdB3W
+            authorization-grant-type: client_credentials
+            scope:
+              - metrics_server
+          discovery:
+            provider: keycloak
+            client-id: manager-app
+            client-secret: 3HwpiJHJ4adsxBRv1qnW1RLeml82y2V2
+            authorization-grant-type: client_credentials
+            scope:
+              - discovery
+      resourceserver:
+        jwt:
+          #          issuer-uri: http://localhost:8082/realms/selmag
+          jwk-set-uri: http://localhost:8082/realms/selmag/protocol/openid-connect/certs
+          # Отключаем iss проверку, потому что host должен быть одинаковый, это не возможно с docker
+          # docker http://host.docker.internal:8082
+
+selmag:
+  services:
+    catalogue:
+      uri: http://catalogue-service:8081
+      registration-id: keycloak
+
+management:
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  zipkin:
+    tracing:
+      endpoint: http://localhost:9411/api/v2/spans
+  tracing:
+    sampling:
+      probability: 1.0
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true

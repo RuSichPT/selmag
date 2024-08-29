@@ -1,3 +1,6 @@
+server:
+  port: 8084
+
 spring:
   application:
     name: feedback-service
@@ -8,7 +11,7 @@ spring:
         instance:
           name: ${spring.application.name}
           service-host-type: ip
-          service-url: http://localhost:8084
+          service-url: http://localhost:${server.port}
         enabled: true # default
   data:
     mongodb:
@@ -24,7 +27,7 @@ spring:
       client:
         registration:
           keycloak:
-            client-id: feedback-service-metrics-client
+            client-id: feedback-service
             client-secret: 0IUAzgjm3bVpE9ocpExhqP3bbVi6ZeAe
             authorization-grant-type: client_credentials
             scope:
@@ -32,8 +35,6 @@ spring:
         provider:
           keycloak:
             issuer-uri: http://localhost:8082/realms/selmag
-server:
-  port: 8084
 
 springdoc:
   swagger-ui:
@@ -59,3 +60,7 @@ management:
   tracing:
     sampling:
       probability: 1.0
+
+eureka:
+  client:
+    enabled: false

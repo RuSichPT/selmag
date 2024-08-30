@@ -4,6 +4,9 @@ server:
 spring:
   application:
     name: catalogue-service
+  cloud:
+    config:
+      enabled: false
   boot:
     admin:
       client:

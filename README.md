@@ -33,7 +33,7 @@ docker run --name feedback-db -p 27017:27017 mongo:7
 ```
 или через docker compose (см ниже)
 
-#### Users
+#### Пользователи
 Username: manager  
 Password: 123  
 Username: customer  
@@ -89,6 +89,7 @@ LOKI=http://localhost:3100
 ```shell
 docker run --name selmag-tracing -p 3200:3200 -p 9095:9095 -p 4317:4317 -p 4318:4318 -p 9411:9411 -p 14268:14268 -v ${pwd}/config/tempo/tempo.yaml:/etc/tempo.yaml grafana/tempo:2.3.1 --config.file=/etc/tempo.yaml
 ```
+или через docker compose (см ниже)
 
 ### Docker compose
 

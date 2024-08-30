@@ -4,6 +4,9 @@ server:
 spring:
   application:
     name: feedback-service
+  cloud:
+    config:
+      enabled: false
   boot:
     admin:
       client:

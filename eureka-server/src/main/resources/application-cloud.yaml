@@ -1,6 +1,12 @@
+server:
+  port: 8761
+
 spring:
   application:
     name: eureka-server
+  cloud:
+    config:
+      enabled: false
   security:
     oauth2:
       client:
@@ -17,9 +23,6 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: http://localhost:8082/realms/selmag
-
-server:
-  port: 8761
 
 eureka:
   instance:

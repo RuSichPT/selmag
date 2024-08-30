@@ -1,12 +1,4 @@
-server:
-  port: 8081
-
 spring:
-  application:
-    name: catalogue-service
-  cloud:
-    config:
-      enabled: false
   boot:
     admin:
       client:

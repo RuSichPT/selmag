@@ -1,0 +1,11 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: catalogue-service
+  config:
+    import: 'optional:configserver:'
+  cloud:
+    config:
+      uri: http://config:pass@localhost:8888

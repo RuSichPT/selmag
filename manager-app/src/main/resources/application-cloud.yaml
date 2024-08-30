@@ -4,6 +4,9 @@ server:
 spring:
   application:
     name: manager-app
+  cloud:
+    config:
+      enabled: false
   boot:
     admin:
       client:

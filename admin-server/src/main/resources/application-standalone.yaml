@@ -1,6 +1,12 @@
+server:
+  port: 8085
+
 spring:
   application:
     name: admin-server
+  cloud:
+    config:
+      enabled: false
   security:
     oauth2:
       resourceserver:
@@ -29,8 +35,6 @@ spring:
               - openid
             client-id: admin-service
             client-secret: M9cPE609ncufTtMeaICp55BJL5inRZ3K
-server:
-  port: 8085
 
 management:
   endpoints:

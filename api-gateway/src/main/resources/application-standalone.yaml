@@ -1,0 +1,79 @@
+server:
+  port: 8086
+  forward-headers-strategy: framework
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    config:
+      enabled: false
+    gateway:
+      routes:
+        - id: catalogue-service-route
+          uri: http://localhost:8081
+          predicates:
+            - Host=catalogue.api.127.0.0.1.nip.io
+          filters:
+            - AddResponseHeader=foo, bar # для примера добавление заголовка в ответ от catalogue-service
+        - id: feedback-service-route
+          uri: http://localhost:8084
+          predicates:
+            - Host=feedback.api.127.0.0.1.nip.io
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+#          issuer-uri: http://localhost:8082/realms/selmag
+          jwk-set-uri: http://localhost:8082/realms/selmag/protocol/openid-connect/certs
+          # Отключаем iss проверку, потому что host должен быть одинаковый, это не возможно с docker
+          # docker http://host.docker.internal:8082
+      client:
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8082/realms/selmag
+        registration:
+          discovery:
+            provider: keycloak
+            client-id: api-gateway
+            client-secret: gJ6PzJmcn3Xg6umYktc0gDplrn5UrTzF
+            authorization-grant-type: client_credentials
+            scope:
+              - discovery
+          metrics:
+            provider: keycloak
+            client-id: api-gateway
+            client-secret: gJ6PzJmcn3Xg6umYktc0gDplrn5UrTzF
+            authorization-grant-type: client_credentials
+            scope:
+              - metrics_server
+  boot:
+    admin:
+      client:
+        url: http://localhost:8085
+        instance:
+          name: ${spring.application.name}
+          service-host-type: ip
+          service-url: http://localhost:${server.port}
+        enabled: true # default
+
+management:
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  zipkin:
+    tracing:
+      endpoint: http://localhost:9411/api/v2/spans
+  tracing:
+    sampling:
+      probability: 1.0
+
+eureka:
+  client:
+    enabled: false

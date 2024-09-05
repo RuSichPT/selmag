@@ -20,6 +20,14 @@ spring:
           uri: lb://feedback-service
           predicates:
             - Host=feedback.api.127.0.0.1.nip.io
+        - id: manager-app-route
+          uri: lb://selmag-manager-app
+          predicates:
+            - Host=manager.127.0.0.1.nip.io
+        - id: customer-app-route
+          uri: lb://selmag-customer-app
+          predicates:
+            - Host=customer.127.0.0.1.nip.io
   security:
     oauth2:
       resourceserver:
